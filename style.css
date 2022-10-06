@@ -4,6 +4,14 @@
     font-family: 'Roboto', sans-serif;
 
 }
+.activeTab{
+    background-color: #eee;
+}
+.yellowTab{
+    color: rgb(51, 255, 0);
+}
+    
+
 html{
     min-height: 100%;
 }
@@ -15,6 +23,30 @@ body{
 }
 button{
     display: inline-block;
+    font-size: 20px;
+    border: none;
+    background: none;
+    opacity: 0.5;
+    transition: 0.3s;
+    cursor: pointer;
+    /* margin-bottom: 10px; */
+
+}
+.button{
+    display: inline-block;
+    font-size: 20px;
+    border: none;
+    background: none;
+    opacity: 0.5;
+    transition: 0.3s;
+    cursor: pointer;
+    /* margin-bottom: 10px; */
+    vertical-align: bottom;
+    width: 50px;
+    height: 40px;
+}
+button:hover{
+    opacity: 1;
 }
 p{
     display: inline-block;
@@ -33,6 +65,9 @@ h1{
     text-align: center;
     margin-bottom: 20px;
     
+}
+ol{
+    margin-top: 20px;
 }
 ol li{
     background-color: rgb(255, 255, 255);
@@ -161,4 +196,24 @@ h2{
 ul{
     white-space: nowrap;
     overflow-x: scroll;
+    display: inline-block;
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+    width: calc(100% - 50px);
+    vertical-align: bottom;
+
+}
+ul::-webkit-scrollbar {
+    display: none;
+  }
+
+
+ul li{
+    display: inline-block;
+    font-size: 20px;
+    background: none;
+    border: none;
+    padding: 0px 5px;
+    cursor: pointer;
+    line-height: 40px;
 }

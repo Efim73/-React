@@ -6,6 +6,12 @@ class App extends React.Component {
         super(props);
         // состояние компонента
         this.state = {
+            activeTab: 0,
+            yellowTab: 0,
+
+
+            
+
             // текст внутри инпута
             text: '',
             // пункты списка
@@ -112,7 +118,7 @@ class App extends React.Component {
     handleNewTab(){
         console.log(123);
         this.setState(function(state){
-            let newTabs = state.tabs;
+              let newTabs = state.tabs;
             newTabs.push('Tab '+this.state.tabs.length)
             return {
                 tabs : newTabs,
@@ -160,11 +166,11 @@ class App extends React.Component {
             {/* // onSubmit срабатывает если подтвердить форму */}
                 <form action="" onSubmit={(e) => this.handleSubmit(e)}>
                     <h1 onClick={(e) => this.textChange(e)}>Список из {this.state.items.length} дел</h1>
-                    <button type='button' onClick={()=>this.handleNewTab()}>+Tab</button>
+                    <button type='button' className='button' onClick={()=>this.handleNewTab()}>+Tab</button>
                     <ul>
                         {
                             this.state.tabs.map((tab, id)=>(
-                                <li className='tab' >{tab}</li>
+                                <Tab yellowTab={this.state.yellowTab} activeTab={this.state.activeTab} id={id} text={tab}/>
                             ))
                         }
                     </ul>
@@ -189,6 +195,25 @@ class App extends React.Component {
         )
     }
 }
+
+
+class Tab extends React.Component{
+    constructor(props){
+
+        super(props)
+        this.state={
+
+        }
+    }
+    render(){
+        return(
+
+            <li className=  {'tab '+(this.props.id==this.props.activeTab? 'activeTab ':'' )+(this.props.id==this.props.yellowTab? 'yellowTab': '')}>{this.props.text}</li>
+        )
+        
+    }
+}
+
 root.render(<App />)
 
 
