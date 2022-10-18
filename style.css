@@ -4,6 +4,7 @@
     font-family: 'Roboto', sans-serif;
 
 }
+
 .activeTab{
     background-color: #eee;
 }
@@ -96,7 +97,7 @@ ol li{
 .cross:first-of-type{
     right: 45px;
 }
-input{
+input:not(.tabInput){
     border: 1px solid rgba(179, 179, 179, 0.644);
     box-shadow: 0px 3px 15px rgba(0, 0, 0, 0.185);
 
@@ -170,7 +171,7 @@ h2{
 
 }
 .textColor{
-    color: white;
+    color: gold;
 }
 .removeAll{
     background-color: white;
@@ -190,6 +191,7 @@ h2{
 .editInput{
     width: 100%;
 }
+
 .tab{
     display: inline-block;
 }
@@ -216,4 +218,13 @@ ul li{
     padding: 0px 5px;
     cursor: pointer;
     line-height: 40px;
+}
+.tabInput{
+    background: white;
+    /* width: 30px; */
+    line-height: 38px;
+    border: 1px solid black;
+    box-sizing: border-box;
+    font-size: 20px;
+
 }

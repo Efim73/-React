@@ -1,4 +1,5 @@
 const root = ReactDOM.createRoot(document.getElementById('root'));
+
 // создается компонент App
 let firstText='';
 class App extends React.Component {
@@ -6,6 +7,7 @@ class App extends React.Component {
         super(props);
         // состояние компонента
         this.state = {
+
             activeTab: 0,
             yellowTab: 0,
 
@@ -33,6 +35,10 @@ class App extends React.Component {
             editedText: '',
             itemId: null,
         }
+        // Нужно для того, чтобы передать функцию в другой компонент на уровень ниже
+        this.handleTab = this.handleTab.bind(this);
+        this.handleChangeTab = this.handleChangeTab.bind(this);
+
     }
     //    ?
     delete(i) {
@@ -57,6 +63,10 @@ class App extends React.Component {
         else{
             e.target.classList.add('textColor')
         }
+        this.setState({
+            activeTab: 0,
+        })
+
     }
 
     handleCheck(e) {
@@ -125,7 +135,27 @@ class App extends React.Component {
             }
         })
     }
-     
+
+    handleTab(id){
+        this.setState({
+            activeTab: id,
+        })
+    }
+    bear(){
+        h1.innerHTML='Список из'+this.state.items.length+'дел 🐻'
+    }
+
+    handleChangeTab(e, id){
+        console.log(id);
+        this.setState(function(state){
+            let newTabs = state.tabs
+            newTabs[id]=e.target.value
+            return{
+                tabs: newTabs,
+            }
+        })
+    }
+
     // функция для добавления нового пункта. 
     handleSubmit(e) {
         e.preventDefault();
@@ -133,6 +163,7 @@ class App extends React.Component {
         let newItem = {
             text: this.state.text,
             id: Date.now(),
+            tab: this.state.activeTab,
         }
         // задается новое состояние 
         this.setState(function (state) {
@@ -153,7 +184,21 @@ class App extends React.Component {
     }
     // создает form 
     render() {
-
+        let bearContent;
+        if(this.state.text=='медведь'){
+            bearContent=<img src="40px-Teddybear_head.svg.png" alt="" />
+            
+        }
+        else{
+            bearContent='';
+        }
+        let goatContent;
+        if(this.state.text=='коза'){
+            goatContent=<img src="коза.webp" alt="" />
+        }
+        else{
+            goatContent=''
+        }
         return (
             <div>
                 <div className={this.state.modalClassList}>
@@ -165,30 +210,31 @@ class App extends React.Component {
                 </div>
             {/* // onSubmit срабатывает если подтвердить форму */}
                 <form action="" onSubmit={(e) => this.handleSubmit(e)}>
-                    <h1 onClick={(e) => this.textChange(e)}>Список из {this.state.items.length} дел</h1>
+                    <h1 onClick={(e) => this.textChange(e)}>Список из {this.state.items.length} дел{bearContent}{goatContent}</h1>
                     <button type='button' className='button' onClick={()=>this.handleNewTab()}>+Tab</button>
                     <ul>
                         {
                             this.state.tabs.map((tab, id)=>(
-                                <Tab yellowTab={this.state.yellowTab} activeTab={this.state.activeTab} id={id} text={tab}/>
+                                <Tab  key={id} handleChangeTab={this.handleChangeTab} handleTab={this.handleTab} yellowTab={this.state.yellowTab} activeTab={this.state.activeTab} id={id} text={tab}/>
                             ))
                         }
                     </ul>
                     <ol>
                         {
                             this.state.items.map((item, i) =>(
-                                <li key={item.id} >
+                                this.state.activeTab==item.tab? 
+                                <li onClick= {(e)=>e.target.style.backgroundColor='blue'} key={item.id} > 
                                     <p onClick={(e) => this.handleCheck(e)}>{item.text}</p>
                                     <button type='button' className='cross' onClick={() => this.handleEdit(i, item.text)} >🖊️</button>
                                     <button onClick={() => this.delete(i)} className='cross' type='button'>🗑️</button>
-                                </li>
+                                </li>:null
                             ))
                         }
 
                     </ol>
                     {/* onChange срабатывает при изменении input */}
-                    <input type="text" placeholder='Новое дело' onChange={(e) => this.setState({ text: e.target.value })} value={this.state.text}/>
-                    <button className='add'  disabled={this.state.text.length>20? true : false}>+</button >
+                    <input type="text"  maxLength='70'  placeholder='Новое дело' onChange={(e) => this.setState({ text: e.target.value } )} value={this.state.text}  />
+                    <button className='add'  disabled={this.state.text.length>70? true : false}>+</button >
                     <button type='button' className='removeAll' onClick={(e) => this.removeLists(e)}>Удалить все пункты</button>
                 </form>
             </div>
@@ -202,13 +248,32 @@ class Tab extends React.Component{
 
         super(props)
         this.state={
-
+        rename: false,
         }
     }
+
+    handleRename(){
+        this.setState(function(state){
+            return{
+                rename: !state.rename,
+            }
+        })
+
+    }
+
+
     render(){
+        let liContent;
+        if(this.state.rename){
+            liContent=<input onChange={(e)=>this.props.handleChangeTab(e, this.props.id)} className='tabInput' type="text" value={this.props.text}/>
+        }
+        else{
+            liContent=this.props.text
+        }
+        
         return(
 
-            <li className=  {'tab '+(this.props.id==this.props.activeTab? 'activeTab ':'' )+(this.props.id==this.props.yellowTab? 'yellowTab': '')}>{this.props.text}</li>
+            <li onDoubleClick={()=>this.handleRename() }  onClick={() =>this.props.handleTab(this.props.id)} className={'tab '+(this.props.id==this.props.activeTab? 'activeTab ':'' )+(this.props.id==this.props.yellowTab? 'yellowTab': '')}>{liContent}</li>
         )
         
     }
@@ -219,4 +284,3 @@ root.render(<App />)
 
 
 
-// при нажатии на дело текст из данного пункта переносится в первый пункт.
