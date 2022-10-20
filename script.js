@@ -34,6 +34,8 @@ class App extends React.Component {
             modalClassList: 'modal',
             editedText: '',
             itemId: null,
+            h1Text: 'Список дел',
+            h1Rename: false,
         }
         // Нужно для того, чтобы передать функцию в другой компонент на уровень ниже
         this.handleTab = this.handleTab.bind(this);
@@ -156,6 +158,27 @@ class App extends React.Component {
         })
     }
 
+    h1Rename(){
+        console.log(8);
+        
+        this.setState(function(state){
+            return{
+                h1Rename: !state.h1Rename,
+            }
+        })
+
+    }
+    h1Change(e){
+        this.setState(function(state){
+            let newText = e.target.value;
+            return{
+                h1Text: newText,
+            }
+
+
+        })
+    }
+
     // функция для добавления нового пункта. 
     handleSubmit(e) {
         e.preventDefault();
@@ -199,6 +222,13 @@ class App extends React.Component {
         else{
             goatContent=''
         }
+        let h1Input ;
+        if(this.state.h1Rename){
+            h1Input = <input type="text" value={this.state.h1Text} onChange={(e)=> this.h1Change(e)} />
+        }
+        else{
+            h1Input=this.state.h1Text;
+        }
         return (
             <div>
                 <div className={this.state.modalClassList}>
@@ -210,7 +240,7 @@ class App extends React.Component {
                 </div>
             {/* // onSubmit срабатывает если подтвердить форму */}
                 <form action="" onSubmit={(e) => this.handleSubmit(e)}>
-                    <h1 onClick={(e) => this.textChange(e)}>Список из {this.state.items.length} дел{bearContent}{goatContent}</h1>
+                    <h1 onDoubleClick={()=>this.h1Rename() } onClick={(e) => this.textChange(e)}>{h1Input}{bearContent}{goatContent}</h1>
                     <button type='button' className='button' onClick={()=>this.handleNewTab()}>+Tab</button>
                     <ul>
                         {
@@ -252,8 +282,12 @@ class Tab extends React.Component{
         }
     }
 
-    handleRename(){
+    handleRename(e){
+        console.log(this.props.text.length);
         this.setState(function(state){
+            if(this.props.text==''){
+                return;
+            }
             return{
                 rename: !state.rename,
             }
@@ -273,7 +307,7 @@ class Tab extends React.Component{
         
         return(
 
-            <li onDoubleClick={()=>this.handleRename() }  onClick={() =>this.props.handleTab(this.props.id)} className={'tab '+(this.props.id==this.props.activeTab? 'activeTab ':'' )+(this.props.id==this.props.yellowTab? 'yellowTab': '')}>{liContent}</li>
+            <li onDoubleClick={(e)=>this.handleRename(e) }  onClick={() =>this.props.handleTab(this.props.id)} className={'tab '+(this.props.id==this.props.activeTab? 'activeTab ':'' )+(this.props.id==this.props.yellowTab? 'yellowTab': '')}>{liContent}</li>
         )
         
     }

@@ -65,6 +65,7 @@ form{
 h1{
     text-align: center;
     margin-bottom: 20px;
+    cursor: pointer;
     
 }
 ol{
@@ -222,9 +223,12 @@ ul li{
 .tabInput{
     background: white;
     /* width: 30px; */
-    line-height: 38px;
-    border: 1px solid black;
+    line-height: 28px;
+    border: 1px solid #eee;
     box-sizing: border-box;
     font-size: 20px;
+    outline: none;
+    width: 100px;
+    padding: 0 4px ;
 
 }
